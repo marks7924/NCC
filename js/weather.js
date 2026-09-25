@@ -107,24 +107,88 @@ const Weather = (() => {
   }
 
   /**
-   * Search cities by name using Open-Meteo Geocoding API.
+   * Helper to swap end-of-word Arabic Taa Marbouta (ة) and Haa (ه) and Alifs for flexible matching.
+   */
+  function _normalizeArabicQuery(str) {
+    if (!str) return '';
+    // Replace 'ه' at end with 'ة' or vice versa
+    if (str.endsWith('ه')) return str.slice(0, -1) + 'ة';
+    if (str.endsWith('ة')) return str.slice(0, -1) + 'ه';
+    return str;
+  }
+
+  /**
+   * Search cities by name supporting English, Arabic, and multilingual input.
    * @param {string} query
    * @returns {Promise<Array<{name, country, latitude, longitude}>>}
    */
   async function searchCities(query) {
     if (!query || query.trim().length < 2) return [];
-    const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=6&language=en`;
-    const res = await fetch(url);
-    if (!res.ok) return [];
-    const data = await res.json();
-    if (!data.results) return [];
-    return data.results.map(r => ({
-      name: r.name,
-      country: r.country || '',
-      admin: r.admin1 || '',
-      latitude: r.latitude,
-      longitude: r.longitude
-    }));
+    const q = query.trim();
+    const lang = (typeof i18n !== 'undefined' && i18n.getLang) ? i18n.getLang() : 'en';
+
+    // Strategy 1: Open-Meteo search with current language
+    try {
+      const openMeteoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=6&language=${lang}`;
+      const res = await fetch(openMeteoUrl);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.results && data.results.length > 0) {
+          return data.results.map(r => ({
+            name: r.name,
+            country: r.country || '',
+            admin: r.admin1 || '',
+            latitude: r.latitude,
+            longitude: r.longitude
+          }));
+        }
+      }
+
+      // Try normalized Arabic query if first attempt returned no results
+      const altQ = _normalizeArabicQuery(q);
+      if (altQ && altQ !== q) {
+        const altUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(altQ)}&count=6&language=${lang}`;
+        const altRes = await fetch(altUrl);
+        if (altRes.ok) {
+          const altData = await altRes.json();
+          if (altData.results && altData.results.length > 0) {
+            return altData.results.map(r => ({
+              name: r.name,
+              country: r.country || '',
+              admin: r.admin1 || '',
+              latitude: r.latitude,
+              longitude: r.longitude
+            }));
+          }
+        }
+      }
+    } catch {
+      // Fall through to Nominatim
+    }
+
+    // Strategy 2: OpenStreetMap Nominatim API fallback (excellent Arabic support)
+    try {
+      const nomUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=6&addressdetails=1&accept-language=${lang}`;
+      const nomRes = await fetch(nomUrl, {
+        headers: { 'Accept-Language': lang }
+      });
+      if (nomRes.ok) {
+        const nomData = await nomRes.json();
+        if (Array.isArray(nomData) && nomData.length > 0) {
+          return nomData.map(r => ({
+            name: r.address?.city || r.address?.town || r.address?.state || r.display_name?.split(',')[0] || r.name,
+            country: r.address?.country || '',
+            admin: r.address?.state || '',
+            latitude: parseFloat(r.lat),
+            longitude: parseFloat(r.lon)
+          }));
+        }
+      }
+    } catch {
+      // Return empty array
+    }
+
+    return [];
   }
 
   // ─── Public API ──────────────────────────────────────────────────────────────
