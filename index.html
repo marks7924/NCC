@@ -82,6 +82,13 @@
           <button class="weather-btn" id="weather-refresh-btn" type="button" aria-label="Refresh temperature">
             <span data-i18n="weatherRefresh">↻ Refresh</span>
           </button>
+          <button class="weather-btn" id="weather-change-city-btn" type="button" aria-label="Change city">
+            <span data-i18n="weatherChangeCity">📍 Change City</span>
+          </button>
+        </div>
+        <div class="city-search-wrap" id="city-search-wrap-change" hidden>
+          <input type="text" class="city-search-input" id="city-search-input-change" data-i18n-placeholder="weatherCityPlaceholder" placeholder="Type a city name…" aria-label="Search city">
+          <div class="city-search-results" id="city-search-results-change" hidden role="listbox"></div>
         </div>
       </div>
 

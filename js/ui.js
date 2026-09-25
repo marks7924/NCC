@@ -33,6 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const weatherLocation    = $('#weather-location');
   const weatherTime        = $('#weather-time');
   const weatherRefreshBtn  = $('#weather-refresh-btn');
+  const weatherChangeCityBtn = $('#weather-change-city-btn');
+  const citySearchWrapChange = $('#city-search-wrap-change');
+  const citySearchInputChange = $('#city-search-input-change');
+  const citySearchResultsChange = $('#city-search-results-change');
   const weatherErrorMsg    = $('#weather-error-msg');
   const tempSourceBadge    = $('#temp-source-badge');
 
@@ -267,6 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setupCitySearch(citySearchBtn, citySearchWrap, citySearchInput, citySearchResults);
   setupCitySearch(citySearchBtnPerm, citySearchWrapPerm, citySearchInputPerm, citySearchResultsPerm);
+  setupCitySearch(weatherChangeCityBtn, citySearchWrapChange, citySearchInputChange, citySearchResultsChange);
 
 
   // ─── Temperature source ──────────────────────────────────────────────────────
