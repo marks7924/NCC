@@ -36,17 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const weatherErrorMsg    = $('#weather-error-msg');
   const tempSourceBadge    = $('#temp-source-badge');
 
-  // City search (error state)
-  const citySearchWrap     = $('#city-search-wrap');
-  const citySearchInput    = $('#city-search-input');
-  const citySearchResults  = $('#city-search-results');
-  const citySearchBtn      = $('#city-search-btn');
-
-  // City search (permission denied state)
-  const citySearchWrapPerm     = $('#city-search-wrap-perm');
-  const citySearchInputPerm    = $('#city-search-input-perm');
-  const citySearchResultsPerm  = $('#city-search-results-perm');
-  const citySearchBtnPerm      = $('#city-search-btn-perm');
+  // Weather UI
+  const weatherLoading     = $('#weather-loading');
 
   // Result elements
   const resultValue        = $('#result-value');
@@ -204,69 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
     showWeatherState('loading');
     await Weather.refresh();
   });
-
-
-  // ─── City Search (reusable for both error & perm-denied states) ──────────
-
-  function setupCitySearch(triggerBtn, wrapEl, inputEl, resultsEl) {
-    if (!triggerBtn || !wrapEl || !inputEl || !resultsEl) return;
-
-    triggerBtn.addEventListener('click', () => {
-      wrapEl.hidden = !wrapEl.hidden;
-      if (!wrapEl.hidden) inputEl.focus();
-    });
-
-    let _timeout = null;
-    inputEl.addEventListener('input', () => {
-      clearTimeout(_timeout);
-      const query = inputEl.value.trim();
-      if (query.length < 2) {
-        resultsEl.innerHTML = '';
-        resultsEl.hidden = true;
-        return;
-      }
-      _timeout = setTimeout(async () => {
-        const cities = await Weather.searchCities(query);
-        renderCityResultsInto(cities, resultsEl, inputEl, wrapEl);
-      }, 350);
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!wrapEl.contains(e.target) && e.target !== triggerBtn) {
-        resultsEl.hidden = true;
-      }
-    });
-  }
-
-  function renderCityResultsInto(cities, resultsEl, inputEl, wrapEl) {
-    if (!cities.length) {
-      resultsEl.innerHTML = `<div class="city-item city-empty">${i18n.t('weatherNoCities')}</div>`;
-      resultsEl.hidden = false;
-      return;
-    }
-    resultsEl.innerHTML = cities.map(c => {
-      const label = [c.name, c.admin, c.country].filter(Boolean).join(', ');
-      return `<button class="city-item" data-lat="${c.latitude}" data-lon="${c.longitude}" data-name="${c.name}">${label}</button>`;
-    }).join('');
-    resultsEl.hidden = false;
-
-    resultsEl.querySelectorAll('.city-item[data-lat]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        Weather.fetchCityTemperature(
-          parseFloat(btn.dataset.lat),
-          parseFloat(btn.dataset.lon),
-          btn.dataset.name
-        );
-        resultsEl.innerHTML = '';
-        resultsEl.hidden = true;
-        inputEl.value = '';
-        wrapEl.hidden = true;
-      });
-    });
-  }
-
-  setupCitySearch(citySearchBtn, citySearchWrap, citySearchInput, citySearchResults);
-  setupCitySearch(citySearchBtnPerm, citySearchWrapPerm, citySearchInputPerm, citySearchResultsPerm);
 
 
   // ─── Temperature source ──────────────────────────────────────────────────────

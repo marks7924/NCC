@@ -91,28 +91,14 @@
           <span class="weather-error-icon" aria-hidden="true">⚠</span>
           <span id="weather-error-msg" data-i18n="weatherError">Unable to retrieve current temperature.</span>
         </p>
-        <button class="weather-btn" id="city-search-btn" type="button" style="margin-top: 8px;">
-          <span data-i18n="weatherSearchCity">🔍 Search for your city</span>
-        </button>
-        <div class="city-search-wrap" id="city-search-wrap" hidden>
-          <input type="text" class="city-search-input" id="city-search-input" data-i18n-placeholder="weatherCityPlaceholder" placeholder="Type a city name…" aria-label="Search city">
-          <div class="city-search-results" id="city-search-results" hidden role="listbox"></div>
-        </div>
       </div>
 
       <!-- Permission Denied -->
       <div id="weather-perm-denied" hidden>
         <p class="weather-perm-msg">
           <span class="weather-error-icon" aria-hidden="true">📍</span>
-          <span data-i18n="weatherPermDenied">Location permission denied. Search for your city or enter temperature manually below.</span>
+          <span data-i18n="weatherPermDenied">Location permission denied. Enter temperature manually below.</span>
         </p>
-        <button class="weather-btn" id="city-search-btn-perm" type="button" style="margin-top: 8px;">
-          <span data-i18n="weatherSearchCity">🔍 Search for your city</span>
-        </button>
-        <div class="city-search-wrap" id="city-search-wrap-perm" hidden>
-          <input type="text" class="city-search-input" id="city-search-input-perm" data-i18n-placeholder="weatherCityPlaceholder" placeholder="Type a city name…" aria-label="Search city">
-          <div class="city-search-results" id="city-search-results-perm" hidden role="listbox"></div>
-        </div>
       </div>
     </section>
 
