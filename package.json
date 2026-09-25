@@ -4,8 +4,7 @@
   "description": "Nitrogen Cylinder Calculator — Estimate N2 Gas Mass in Pressurized Cylinders",
   "main": "index.html",
   "scripts": {
-    "start": "npx -y http-server . -p 8090",
-    "build": "echo 'Static site ready for deployment'"
+    "start": "npx -y http-server . -p 8090"
   },
   "keywords": [
     "nitrogen",
