@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-theme="light">
+<html lang="ar" dir="rtl" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
@@ -203,11 +203,26 @@
 
     <!-- ═══════ Result Section ═══════ -->
     <section class="card result-card" id="result-section" hidden aria-live="polite" aria-label="Calculation result">
-      <p class="result-label" data-i18n="resultLabel">Estimated Nitrogen</p>
-      <div class="result-value-wrap">
-        <span class="result-value" id="result-value">0.00</span>
-        <span class="result-value-unit">kg</span>
+      <p class="result-label" data-i18n="resultLabel">Estimated Nitrogen Output</p>
+
+      <div class="result-main-grid">
+        <div class="result-main-box">
+          <span class="result-box-label" data-i18n="resultMassLabel">Gas Mass</span>
+          <div class="result-value-wrap">
+            <span class="result-value" id="result-value">0.00</span>
+            <span class="result-value-unit">kg</span>
+          </div>
+        </div>
+
+        <div class="result-main-box">
+          <span class="result-box-label" data-i18n="resultVolumeM3Label">Expanded Gas Volume</span>
+          <div class="result-value-wrap">
+            <span class="result-value" id="result-volume-m3">0.00</span>
+            <span class="result-value-unit">m³</span>
+          </div>
+        </div>
       </div>
+
       <p class="result-gas-name" data-i18n="resultGasName">Nitrogen (N₂)</p>
 
       <div class="result-details">

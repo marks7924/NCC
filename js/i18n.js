@@ -55,7 +55,10 @@ const i18n = (() => {
       calculateBtn: 'Calculate Nitrogen Mass',
 
       // Result
-      resultLabel: 'Estimated Nitrogen',
+      resultLabel: 'Estimated Nitrogen Output',
+      resultMassLabel: 'Gas Mass',
+      resultVolumeM3Label: 'Expanded Gas Volume',
+      resultFreeVolLabel: 'Gas Volume (1 atm)',
       resultGasName: 'Nitrogen (N₂)',
       resultGaugeLabel: 'Gauge Pressure',
       resultAbsoluteLabel: 'Absolute Pressure',
@@ -147,7 +150,10 @@ const i18n = (() => {
       calculateBtn: 'حساب كتلة النيتروجين',
 
       // Result
-      resultLabel: 'النيتروجين المُقدَّر',
+      resultLabel: 'النتائج المُقدَّرة للنيتروجين',
+      resultMassLabel: 'كتلة الغاز',
+      resultVolumeM3Label: 'حجم الغاز الحر (عند الضغط الجوي)',
+      resultFreeVolLabel: 'حجم الغاز (1 ضغط جوي)',
       resultGasName: '(N₂) النيتروجين',
       resultGaugeLabel: 'ضغط المقياس',
       resultAbsoluteLabel: 'الضغط المطلق',
@@ -200,7 +206,7 @@ const i18n = (() => {
 
   // ─── State ───────────────────────────────────────────────────────────────────
 
-  let _currentLang = localStorage.getItem('n2calc-lang') || 'en';
+  let _currentLang = localStorage.getItem('n2calc-lang') || 'ar';
   let _onChangeCallbacks = [];
 
   // ─── Public API ──────────────────────────────────────────────────────────────

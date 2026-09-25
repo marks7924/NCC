@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Result elements
   const resultValue        = $('#result-value');
+  const resultVolumeM3     = $('#result-volume-m3');
   const resultGauge        = $('#result-gauge');
   const resultAbsolute     = $('#result-absolute');
   const resultTempC        = $('#result-temp-c');
@@ -160,10 +161,21 @@ document.addEventListener('DOMContentLoaded', () => {
   // ─── Weather Integration ─────────────────────────────────────────────────────
 
   function showWeatherState(state) {
+    // Hide spinner / loading block once temperature is received (success), show when loading
     weatherLoading.hidden    = state !== 'loading';
     weatherSuccess.hidden    = state !== 'success';
     weatherError.hidden      = state !== 'error';
     weatherPermDenied.hidden = state !== 'permission_denied';
+
+    if (weatherRefreshBtn) {
+      if (state === 'loading') {
+        weatherRefreshBtn.disabled = true;
+        weatherRefreshBtn.classList.add('is-refreshing');
+      } else {
+        weatherRefreshBtn.disabled = false;
+        weatherRefreshBtn.classList.remove('is-refreshing');
+      }
+    }
   }
 
   Weather.onStatusChange((status) => {
@@ -177,6 +189,8 @@ document.addEventListener('DOMContentLoaded', () => {
     weatherTime.textContent = i18n.t('weatherJustNow');
     setTempSource('auto');
     clearFieldError('temperature');
+    // Ensure loading spinner is hidden when temperature result is displayed
+    showWeatherState('success');
   });
 
   Weather.onError((msg) => {
@@ -184,9 +198,10 @@ document.addEventListener('DOMContentLoaded', () => {
     weatherErrorMsg.textContent = i18n.t('weatherError');
   });
 
-  // Refresh button
-  weatherRefreshBtn.addEventListener('click', () => {
-    Weather.refresh();
+  // Refresh button: trigger refresh and show loading spinner until new temp is found
+  weatherRefreshBtn.addEventListener('click', async () => {
+    showWeatherState('loading');
+    await Weather.refresh();
   });
 
 
@@ -417,6 +432,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderResult(r) {
     resultValue.textContent    = r.massKg.toFixed(2);
+    if (resultVolumeM3) resultVolumeM3.textContent = r.freeGasVolumeM3.toFixed(2);
     resultGauge.textContent    = `${r.gaugePressureBar} bar`;
     resultAbsolute.textContent = `${r.absolutePressureBar.toFixed(3)} bar`;
     resultTempC.textContent    = `${r.temperatureC}°C`;

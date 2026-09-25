@@ -159,6 +159,9 @@ function calculateNitrogenMass(temperatureC, volumeLiters, gaugePressureBar) {
   // Step 6 – Mass: m = n × M(N₂)
   const massKg = moles * M_N2;
 
+  // Step 7 – Free Gas Volume at 1 atm (1.01325 bar) in m³: V_free = V_cylinder * (P_abs / P_atm)
+  const freeGasVolumeM3 = (volumeM3 * absolutePressureBar) / ATM_BAR;
+
   // Guard against impossible results
   if (!isFinite(massKg) || isNaN(massKg)) {
     throw new Error('Calculation produced an invalid result. Please check your inputs.');
@@ -166,6 +169,7 @@ function calculateNitrogenMass(temperatureC, volumeLiters, gaugePressureBar) {
 
   return {
     massKg: Math.round(massKg * 100) / 100,          // 2 decimal places
+    freeGasVolumeM3: Math.round(freeGasVolumeM3 * 100) / 100, // 2 decimal places in m³
     absolutePressureBar: Math.round(absolutePressureBar * 1000) / 1000,
     absolutePressurePa,
     temperatureKelvin: Math.round(temperatureKelvin * 100) / 100,
