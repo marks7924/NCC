@@ -105,6 +105,10 @@
 
 /* ─── Reset & Base ─────────────────────────────────────────────────────────── */
 
+[hidden] {
+  display: none !important;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -992,6 +996,13 @@ body {
   color: var(--text-tertiary);
   font-size: 0.75rem;
   line-height: 1.6;
+}
+
+.footer-made-by {
+  font-size: 0.7rem;
+  opacity: 0.75;
+  margin-top: 6px;
+  letter-spacing: 0.03em;
 }
 
 

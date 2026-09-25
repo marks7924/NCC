@@ -85,6 +85,7 @@ const i18n = (() => {
       // Footer
       footerLine1: 'Nitrogen Cylinder Calculator',
       footerLine2: 'Uses the ideal gas law (PV = nRT) · For estimation purposes only',
+      madeBy: 'Made by Mark',
 
       // Validation errors
       errTempEmpty: 'Please enter the ambient temperature.',
@@ -180,6 +181,7 @@ const i18n = (() => {
       // Footer
       footerLine1: 'حاسبة أسطوانة النيتروجين',
       footerLine2: 'تستخدم قانون الغاز المثالي (PV = nRT) · لأغراض التقدير فقط',
+      madeBy: 'صُنِع بواسطة مارك',
 
       // Validation errors
       errTempEmpty: 'يرجى إدخال درجة الحرارة المحيطة.',
