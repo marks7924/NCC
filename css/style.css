@@ -809,10 +809,16 @@ body {
 
 .result-main-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: var(--space-sm);
   margin-top: var(--space-md);
   margin-bottom: var(--space-md);
+}
+
+@media (min-width: 640px) {
+  .result-main-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .result-main-box {
@@ -824,6 +830,22 @@ body {
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Mobile phone layout: 3rd box (Liters L) sits in the middle underneath 1st (kg) and 2nd (m³) boxes */
+@media (max-width: 639px) {
+  .result-main-box:nth-child(3) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 100%;
+  }
+
+  .result-main-box .result-value {
+    font-size: 1.6rem;
+  }
+  .result-main-box .result-value-unit {
+    font-size: 0.95rem;
+  }
 }
 
 .result-box-label {
