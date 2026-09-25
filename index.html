@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
+  <title>Nitrogen Cylinder Calculator — Estimate N₂ Gas Mass</title>
+  <meta name="description" content="Calculate the estimated mass of nitrogen gas (N₂) inside a pressurized cylinder using gauge pressure, cylinder volume, and ambient temperature.">
+  <meta name="keywords" content="nitrogen, N2, cylinder, gas, pressure, calculator, ideal gas law, mass, kg">
+  <meta name="theme-color" content="#4f6df5">
+
+  <!-- Google Fonts – Inter + Noto Sans Arabic -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-wrapper" role="main">
+
+    <!-- ═══════ Header ═══════ -->
+    <header class="app-header">
+      <div class="header-content">
+        <div class="app-logo">
+          <div class="logo-icon" aria-hidden="true">N₂</div>
+          <h1 class="app-title" data-i18n="appTitle">Nitrogen Cylinder Calculator</h1>
+        </div>
+        <p class="app-subtitle" data-i18n="appSubtitle">Estimate the amount of nitrogen gas inside a pressurized cylinder.</p>
+      </div>
+      <div class="header-actions">
+        <button class="header-btn lang-toggle" id="lang-toggle" type="button" aria-label="Switch language">
+          <span class="lang-toggle-label" id="lang-toggle-label">EN</span>
+        </button>
+        <button class="header-btn theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode">
+          <!-- Icon injected by JS -->
+        </button>
+      </div>
+    </header>
+
+
+    <!-- ═══════ Weather Section ═══════ -->
+    <section class="card weather-card" id="weather-status" aria-label="Weather temperature">
+      <div class="card-title" data-i18n="weatherCardTitle">Ambient Temperature — Weather</div>
+
+      <!-- Loading -->
+      <div class="weather-loading" id="weather-loading" hidden>
+        <div class="spinner" aria-hidden="true"></div>
+        <span data-i18n="weatherLoading">Retrieving current temperature…</span>
+      </div>
+
+      <!-- Success -->
+      <div class="weather-success" id="weather-success" hidden>
+        <div class="weather-row">
+          <span class="weather-temp-display" id="weather-temp-display">—</span>
+          <span class="weather-location" id="weather-location"></span>
+        </div>
+        <div class="weather-meta">
+          <span class="weather-time" id="weather-time"></span>
+          <button class="weather-btn" id="weather-refresh-btn" type="button" aria-label="Refresh temperature">
+            <span data-i18n="weatherRefresh">↻ Refresh</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div id="weather-error" hidden>
+        <p class="weather-error-msg">
+          <span class="weather-error-icon" aria-hidden="true">⚠</span>
+          <span id="weather-error-msg" data-i18n="weatherError">Unable to retrieve current temperature.</span>
+        </p>
+        <button class="weather-btn" id="city-search-btn" type="button" style="margin-top: 8px;">
+          <span data-i18n="weatherSearchCity">🔍 Search for your city</span>
+        </button>
+        <div class="city-search-wrap" id="city-search-wrap" hidden>
+          <input type="text" class="city-search-input" id="city-search-input" data-i18n-placeholder="weatherCityPlaceholder" placeholder="Type a city name…" aria-label="Search city">
+          <div class="city-search-results" id="city-search-results" hidden role="listbox"></div>
+        </div>
+      </div>
+
+      <!-- Permission Denied -->
+      <div id="weather-perm-denied" hidden>
+        <p class="weather-perm-msg">
+          <span class="weather-error-icon" aria-hidden="true">📍</span>
+          <span data-i18n="weatherPermDenied">Location permission denied. Search for your city or enter temperature manually below.</span>
+        </p>
+        <button class="weather-btn" id="city-search-btn-perm" type="button" style="margin-top: 8px;">
+          <span data-i18n="weatherSearchCity">🔍 Search for your city</span>
+        </button>
+        <div class="city-search-wrap" id="city-search-wrap-perm" hidden>
+          <input type="text" class="city-search-input" id="city-search-input-perm" data-i18n-placeholder="weatherCityPlaceholder" placeholder="Type a city name…" aria-label="Search city">
+          <div class="city-search-results" id="city-search-results-perm" hidden role="listbox"></div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════ Input Section ═══════ -->
+    <section class="card" aria-label="Calculator inputs">
+      <div class="card-title" data-i18n="inputTitle">Input Parameters</div>
+
+      <!-- Temperature -->
+      <div class="input-group">
+        <label class="input-label" for="temperature-input">
+          <span class="input-label-text" data-i18n="tempLabel">Ambient Temperature</span>
+          <span class="source-badge source-manual" id="temp-source-badge">Manual Input</span>
+        </label>
+        <div class="input-wrapper">
+          <input
+            type="number"
+            id="temperature-input"
+            class="input-field"
+            data-i18n-placeholder="tempPlaceholder"
+            placeholder="e.g. 25"
+            step="any"
+            inputmode="decimal"
+            aria-describedby="temp-helper temp-error"
+            autocomplete="off"
+          >
+          <span class="input-unit" aria-hidden="true">°C</span>
+        </div>
+        <p class="input-helper" id="temp-helper" data-i18n="tempHelper">Enter the temperature near the cylinder. Auto-filled from weather if available.</p>
+        <p class="field-error" id="temp-error" hidden role="alert"></p>
+      </div>
+
+      <!-- Volume -->
+      <div class="input-group">
+        <label class="input-label" for="volume-input">
+          <span class="input-label-text" data-i18n="volumeLabel">Cylinder Volume</span>
+        </label>
+        <div class="input-wrapper">
+          <input
+            type="number"
+            id="volume-input"
+            class="input-field"
+            data-i18n-placeholder="volumePlaceholder"
+            placeholder="e.g. 50"
+            step="any"
+            min="0"
+            inputmode="decimal"
+            aria-describedby="volume-helper volume-error"
+            autocomplete="off"
+          >
+          <span class="input-unit" aria-hidden="true">L</span>
+        </div>
+        <p class="input-helper" id="volume-helper" data-i18n="volumeHelper">Enter the water capacity written on the cylinder.</p>
+        <p class="field-error" id="volume-error" hidden role="alert"></p>
+      </div>
+
+      <!-- Pressure -->
+      <div class="input-group">
+        <label class="input-label" for="pressure-input">
+          <span class="input-label-text" data-i18n="pressureLabel">Gauge Pressure</span>
+        </label>
+        <div class="input-wrapper">
+          <input
+            type="number"
+            id="pressure-input"
+            class="input-field"
+            data-i18n-placeholder="pressurePlaceholder"
+            placeholder="e.g. 200"
+            step="any"
+            min="0"
+            inputmode="decimal"
+            aria-describedby="pressure-helper pressure-error"
+            autocomplete="off"
+          >
+          <span class="input-unit" aria-hidden="true">bar</span>
+        </div>
+        <p class="input-helper" id="pressure-helper" data-i18n="pressureHelper">Enter the pressure currently shown on the cylinder gauge.</p>
+        <p class="field-error" id="pressure-error" hidden role="alert"></p>
+      </div>
+    </section>
+
+
+    <!-- ═══════ Calculate Button ═══════ -->
+    <button class="calculate-btn" id="calculate-btn" type="button">
+      <span data-i18n="calculateBtn">Calculate Nitrogen Mass</span>
+    </button>
+
+
+    <!-- ═══════ Result Section ═══════ -->
+    <section class="card result-card" id="result-section" hidden aria-live="polite" aria-label="Calculation result">
+      <p class="result-label" data-i18n="resultLabel">Estimated Nitrogen</p>
+      <div class="result-value-wrap">
+        <span class="result-value" id="result-value">0.00</span>
+        <span class="result-value-unit">kg</span>
+      </div>
+      <p class="result-gas-name" data-i18n="resultGasName">Nitrogen (N₂)</p>
+
+      <div class="result-details">
+        <div class="result-detail">
+          <span class="result-detail-label" data-i18n="resultGaugeLabel">Gauge Pressure</span>
+          <span class="result-detail-value" id="result-gauge">—</span>
+        </div>
+        <div class="result-detail">
+          <span class="result-detail-label" data-i18n="resultAbsoluteLabel">Absolute Pressure</span>
+          <span class="result-detail-value" id="result-absolute">—</span>
+        </div>
+        <div class="result-detail">
+          <span class="result-detail-label" data-i18n="resultTempCLabel">Temperature</span>
+          <span class="result-detail-value" id="result-temp-c">—</span>
+        </div>
+        <div class="result-detail">
+          <span class="result-detail-label" data-i18n="resultTempKLabel">Temperature</span>
+          <span class="result-detail-value" id="result-temp-k">—</span>
+        </div>
+        <div class="result-detail">
+          <span class="result-detail-label" data-i18n="resultVolumeLabel">Cylinder Volume</span>
+          <span class="result-detail-value" id="result-volume">—</span>
+        </div>
+        <div class="result-detail">
+          <span class="result-detail-label" data-i18n="resultMolesLabel">Amount of Gas</span>
+          <span class="result-detail-value" id="result-moles">—</span>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════ Explanation Section ═══════ -->
+    <button class="explanation-toggle" id="explanation-toggle" type="button" aria-expanded="false" aria-controls="explanation-content">
+      <span data-i18n="explanationToggle">How is this calculated?</span>
+      <span class="toggle-icon" aria-hidden="true">+</span>
+    </button>
+
+    <div class="explanation-content" id="explanation-content" hidden>
+      <ol id="explanation-steps">
+        <!-- Steps injected by JS from i18n -->
+      </ol>
+      <div class="explanation-formula" id="explanation-formula" aria-label="Formula">
+        PV = nRT &nbsp;→&nbsp; n = PV / RT &nbsp;→&nbsp; mass = n × M
+      </div>
+    </div>
+
+
+    <!-- ═══════ Safety Notice ═══════ -->
+    <div class="card notice-card" role="note" aria-label="Important notice">
+      <p class="notice-title">
+        <span class="notice-title-icon" aria-hidden="true">⚠</span>
+        <span data-i18n="noticeTitle">Important</span>
+      </p>
+      <p class="notice-text" data-i18n-html="noticeText">
+        This calculator provides an <strong>estimated</strong> nitrogen mass based on the entered pressure, cylinder volume, and temperature.
+        It assumes ideal-gas behavior. Actual cylinder contents may differ due to gas compressibility, temperature variation,
+        pressure-gauge accuracy, and cylinder specifications. This is an estimate — not a direct measurement of the cylinder contents.
+      </p>
+    </div>
+
+
+    <!-- ═══════ Footer ═══════ -->
+    <footer class="app-footer">
+      <p data-i18n="footerLine1">Nitrogen Cylinder Calculator</p>
+      <p data-i18n="footerLine2">Uses the ideal gas law (PV = nRT) · For estimation purposes only</p>
+    </footer>
+
+  </div>
+
+  <!-- Scripts – order matters: calculator (pure), i18n, weather (API), ui (DOM) -->
+  <script src="js/calculator.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/ui.js"></script>
+
+</body>
+</html>
