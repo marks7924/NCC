@@ -19,6 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const langToggleBtn      = $('#lang-toggle');
   const langToggleLabel    = $('#lang-toggle-label');
 
+  // Location Modal
+  const locationModal      = $('#location-modal');
+  const locModalAllow      = $('#loc-modal-allow');
+  const locModalDismiss    = $('#loc-modal-dismiss');
+
   // Weather UI
   const weatherLoading     = $('#weather-loading');
   const weatherSuccess     = $('#weather-success');
@@ -275,8 +280,55 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, 30000);
 
-  // Start automatic weather fetch
-  Weather.fetchAutoTemperature();
+  // Location Modal handlers
+  function showLocationModal() {
+    if (locationModal) locationModal.hidden = false;
+  }
+
+  function hideLocationModal() {
+    if (locationModal) locationModal.hidden = true;
+  }
+
+  if (locModalAllow) {
+    locModalAllow.addEventListener('click', () => {
+      hideLocationModal();
+      Weather.fetchAutoTemperature();
+    });
+  }
+
+  if (locModalDismiss) {
+    locModalDismiss.addEventListener('click', () => {
+      hideLocationModal();
+      showWeatherState('permission_denied');
+    });
+  }
+
+  async function initLocationPrompt() {
+    if (!navigator.geolocation) {
+      showWeatherState('error');
+      return;
+    }
+
+    if (navigator.permissions && navigator.permissions.query) {
+      try {
+        const status = await navigator.permissions.query({ name: 'geolocation' });
+        if (status.state === 'granted') {
+          Weather.fetchAutoTemperature();
+        } else if (status.state === 'prompt') {
+          showLocationModal();
+        } else {
+          showWeatherState('permission_denied');
+        }
+      } catch {
+        showLocationModal();
+      }
+    } else {
+      showLocationModal();
+    }
+  }
+
+  // Check & prompt for location on start
+  initLocationPrompt();
 
 
   // ─── Validation UI ───────────────────────────────────────────────────────────

@@ -15,8 +15,8 @@ const i18n = (() => {
   const translations = {
     en: {
       dir: 'ltr',
-      langLabel: 'EN',
-      langName: 'English',
+      langLabel: '🌐 العربية',
+      langName: 'Switch to Arabic',
 
       // Header
       appTitle: 'Nitrogen Cylinder Calculator',
@@ -94,6 +94,12 @@ const i18n = (() => {
       errPresInvalid: 'Gauge pressure must be a valid number.',
       errPresNeg: 'Pressure cannot be negative.',
 
+      // Location modal
+      locationModalTitle: 'Enable Location',
+      locationModalBody: 'Turn on your location to automatically detect the ambient temperature near you.',
+      locationModalAllow: 'Enable Location',
+      locationModalDismiss: 'Not now',
+
       // Theme
       switchToLight: 'Switch to light mode',
       switchToDark: 'Switch to dark mode',
@@ -101,8 +107,8 @@ const i18n = (() => {
 
     ar: {
       dir: 'rtl',
-      langLabel: 'ع',
-      langName: 'العربية',
+      langLabel: '🌐 English',
+      langName: 'التبديل إلى الإنجليزية',
 
       // Header
       appTitle: 'حاسبة أسطوانة النيتروجين',
@@ -179,6 +185,12 @@ const i18n = (() => {
       errPresEmpty: 'يرجى إدخال ضغط المقياس.',
       errPresInvalid: 'يجب أن يكون ضغط المقياس رقمًا صالحًا.',
       errPresNeg: 'لا يمكن أن يكون الضغط سالبًا.',
+
+      // Location modal
+      locationModalTitle: 'تفعيل الموقع',
+      locationModalBody: 'قم بتشغيل موقعك لاكتشاف درجة الحرارة المحيطة تلقائيًا.',
+      locationModalAllow: 'تفعيل الموقع',
+      locationModalDismiss: 'ليس الآن',
 
       // Theme
       switchToLight: 'التبديل إلى الوضع الفاتح',

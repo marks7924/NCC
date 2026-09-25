@@ -17,6 +17,28 @@
 </head>
 <body>
 
+  <!-- ═══════ Location Permission Modal ═══════ -->
+  <div class="location-modal-overlay" id="location-modal" hidden>
+    <div class="location-modal" role="dialog" aria-modal="true" aria-labelledby="loc-modal-title">
+      <div class="location-modal-icon" aria-hidden="true">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+      </div>
+      <h2 class="location-modal-title" id="loc-modal-title" data-i18n="locationModalTitle">Enable Location</h2>
+      <p class="location-modal-body" data-i18n="locationModalBody">Turn on your location to automatically detect the ambient temperature near you.</p>
+      <div class="location-modal-actions">
+        <button class="location-modal-btn location-modal-allow" id="loc-modal-allow" type="button">
+          <span data-i18n="locationModalAllow">Enable Location</span>
+        </button>
+        <button class="location-modal-btn location-modal-dismiss" id="loc-modal-dismiss" type="button">
+          <span data-i18n="locationModalDismiss">Not now</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div class="app-wrapper" role="main">
 
     <!-- ═══════ Header ═══════ -->
