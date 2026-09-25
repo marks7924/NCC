@@ -807,6 +807,46 @@ body {
   letter-spacing: 0.02em;
 }
 
+.result-main-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.result-main-box {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-xs);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.result-box-label {
+  font-size: 0.72rem;
+  opacity: 0.85;
+  font-weight: 600;
+  margin-bottom: var(--space-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+[dir="rtl"] .result-box-label {
+  letter-spacing: 0.01em;
+}
+
+.result-main-box .result-value {
+  font-size: 2rem;
+}
+
+.result-main-box .result-value-unit {
+  font-size: 1rem;
+}
+
 .result-value-wrap {
   margin-bottom: var(--space-xs);
 }

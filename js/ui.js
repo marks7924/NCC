@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Result elements
   const resultValue        = $('#result-value');
   const resultVolumeM3     = $('#result-volume-m3');
+  const resultVolumeL      = $('#result-volume-l');
   const resultGauge        = $('#result-gauge');
   const resultAbsolute     = $('#result-absolute');
   const resultTempC        = $('#result-temp-c');
@@ -433,6 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderResult(r) {
     resultValue.textContent    = r.massKg.toFixed(2);
     if (resultVolumeM3) resultVolumeM3.textContent = r.freeGasVolumeM3.toFixed(2);
+    if (resultVolumeL)  resultVolumeL.textContent  = r.freeGasVolumeLiters.toLocaleString(undefined, { maximumFractionDigits: 1 });
     resultGauge.textContent    = `${r.gaugePressureBar} bar`;
     resultAbsolute.textContent = `${r.absolutePressureBar.toFixed(3)} bar`;
     resultTempC.textContent    = `${r.temperatureC}°C`;

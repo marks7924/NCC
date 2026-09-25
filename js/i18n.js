@@ -57,7 +57,8 @@ const i18n = (() => {
       // Result
       resultLabel: 'Estimated Nitrogen Output',
       resultMassLabel: 'Gas Mass',
-      resultVolumeM3Label: 'Expanded Gas Volume',
+      resultVolumeM3Label: 'Gas Volume (m³)',
+      resultVolumeLitersLabel: 'Gas Volume (Liters)',
       resultFreeVolLabel: 'Gas Volume (1 atm)',
       resultGasName: 'Nitrogen (N₂)',
       resultGaugeLabel: 'Gauge Pressure',
@@ -153,7 +154,8 @@ const i18n = (() => {
       // Result
       resultLabel: 'النتائج المُقدَّرة للنيتروجين',
       resultMassLabel: 'كتلة الغاز',
-      resultVolumeM3Label: 'حجم الغاز الحر (عند الضغط الجوي)',
+      resultVolumeM3Label: 'حجم الغاز (متر مكعب)',
+      resultVolumeLitersLabel: 'حجم الغاز (باللتر)',
       resultFreeVolLabel: 'حجم الغاز (1 ضغط جوي)',
       resultGasName: '(N₂) النيتروجين',
       resultGaugeLabel: 'ضغط المقياس',
